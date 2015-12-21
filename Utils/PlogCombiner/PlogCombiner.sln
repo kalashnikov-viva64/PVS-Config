@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlogCombiner", "PlogCombiner.csproj", "{D39638A9-7559-4A3C-B1D5-F23C6E4C95FD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D39638A9-7559-4A3C-B1D5-F23C6E4C95FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D39638A9-7559-4A3C-B1D5-F23C6E4C95FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D39638A9-7559-4A3C-B1D5-F23C6E4C95FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D39638A9-7559-4A3C-B1D5-F23C6E4C95FD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
