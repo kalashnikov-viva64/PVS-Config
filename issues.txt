@@ -4,4 +4,4 @@ PlogConverter.exe -p generated-x64-projects.plog -a GA:1,2;64:1 -revision 12345 
 3. email_map
 author - email
 
--u [Auto] PVS-Studio Analysis x64 Results 
+-u [Auto] PVS-Studio Analysis x64 Results  
