@@ -1,0 +1,11 @@
+﻿The batch file PVS-Analyse.bat is used to perform static code analysis with the PVS-Studio tool.
+
+Usage: PVS-Analyse.bat <Platform> <DelayMinutes>
+<Platform> - Platform x86 or x64
+<DelayMinutes> - Analysis runtime in minutes
+
+We used a set of methods to increase reliability of the static analysis:
+•	3 analysis attempts,
+•	*.plog report creation check,
+•	Forced Visual Studio shutdown after the time out,
+•	Removal of Visual Studio temporary files 
