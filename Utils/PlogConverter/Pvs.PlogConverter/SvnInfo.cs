@@ -117,7 +117,6 @@ namespace ProgramVerificationSystems.PlogConverter
 
         private SvnInfo()
         {
-            _emailsFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Emails.lst");
         }
         static SvnInfo()
         {
@@ -125,14 +124,16 @@ namespace ProgramVerificationSystems.PlogConverter
         }
         public static SvnInfo Instance { get; private set; }
 
-        public void ReadConfig()
+        public void ReadConfig(string outputDir)
         {
-            ReadStringPairsFile(_emailsFile, _emails);
+            string emailsFile = Path.Combine(outputDir, "Emails.lst");
+            ReadStringPairsFile(emailsFile, _emails);
         }
 
-        public void WriteConfig()
+        public void WriteConfig(string outputDir)
         {
-            WriteStringPairsFile(_emailsFile, _emails);
+            string emailsFile = Path.Combine(outputDir, "Emails.lst");
+            WriteStringPairsFile(emailsFile, _emails);
         }
 
         public void ParseBlame(string fileName, int lineNumber)
