@@ -56,8 +56,7 @@ namespace ProgramVerificationSystems.PlogConverter
 
         // email options
         /// <example>--header="[auto] PVS-Studio Analysis x64 Results"</example>
-        [Option("header", DefaultValue = "",
-            HelpText = "Заголовок письма")]
+        [Option("header", DefaultValue = "")]
         public string Header { get; set; }
         /// <example>--server=smtp-20.1gb.ru</example>
         [Option("server", DefaultValue = "smtp-20.1gb.ru")]

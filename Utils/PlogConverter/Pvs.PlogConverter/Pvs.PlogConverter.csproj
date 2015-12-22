@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ProgramVerificationSystems.PlogConverter</RootNamespace>
     <AssemblyName>PlogConverter</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -60,9 +60,9 @@
     <Reference Include="CommandLine">
       <HintPath>..\..\External\CommandLineParser.1.9.71\lib\net40\CommandLine.dll</HintPath>
     </Reference>
-    <Reference Include="SharpSvn, Version=1.8009.3299.43, Culture=neutral, PublicKeyToken=d729672594885a28, processorArchitecture=AMD64">
+    <Reference Include="SharpSvn, Version=1.9003.3799.86, Culture=neutral, PublicKeyToken=d729672594885a28, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\External\SharpSvn.1.8-x64.1.8014.3710.110\lib\net40\SharpSvn.dll</HintPath>
+      <HintPath>..\packages\SharpSvn.1.9-x64.1.9003.3799.86\lib\net40\SharpSvn.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Net" />
@@ -103,6 +103,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
