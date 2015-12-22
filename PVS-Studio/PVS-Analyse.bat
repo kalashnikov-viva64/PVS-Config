@@ -21,7 +21,7 @@ goto lblError
   set PVS_Solution=generated-all-projects-with-dependencies_%PVS_NumPart%.sln
   set PVS_PlogDir=C:\PVS Dalet logs x86 trunk\temp
   set PVS_PlogFile=%PVS_PlogDir%\generated-x86-projects_%PVS_NumPart%.plog
-  set PVS_PluginExec="PVSStudio.CheckSolution Win32|Release|%PVS_PlogFile%||SuppressAll"
+  set PVS_PluginExec="PVSStudio.CheckSolution Win32|Release|%PVS_PlogFile%|||SuppressAll"
   cd /d S:\src\env\MasterBuild
   call set-daletplus-dev-path.bat
   call SetMsdevEnv.bat
