@@ -62,7 +62,7 @@
     </Reference>
     <Reference Include="SharpSvn, Version=1.9003.3799.86, Culture=neutral, PublicKeyToken=d729672594885a28, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SharpSvn.1.9-x64.1.9003.3799.86\lib\net40\SharpSvn.dll</HintPath>
+      <HintPath>..\..\External\SharpSvn.1.7-x64.1.7022.3706.129\lib\net40\SharpSvn.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Net" />
