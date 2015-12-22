@@ -270,7 +270,7 @@ namespace ProgramVerificationSystems.PlogConverter
 
             public void Render()
             {
-                SvnInfo.Instance.ReadConfig(RenderInfo.OutputDir);
+                SvnInfo.Instance.ReadConfig();
                 SvnInfo.Instance.AddAuthor("all");
                 if (Errors != null && Errors.Any())
                 {
@@ -284,7 +284,7 @@ namespace ProgramVerificationSystems.PlogConverter
                         _writers["all"]._writer.WriteLine("<h3>{0}</h3>", NoMessage);
                 }
                 CloseAll();
-                SvnInfo.Instance.WriteConfig(RenderInfo.OutputDir);
+                SvnInfo.Instance.WriteConfig();
                 SendEmails();
                 _writers.Clear();
                 OnRenderComplete(new RenderCompleteEventArgs(_writers.ContainsKey("all") ? _writers["all"]._htmlPath : ""));

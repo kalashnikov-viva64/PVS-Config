@@ -123,15 +123,15 @@ namespace ProgramVerificationSystems.PlogConverter
         }
         public static SvnInfo Instance { get; private set; }
 
-        public void ReadConfig(string outputDir)
+        public void ReadConfig()
         {
-            string emailsFile = Path.Combine(outputDir, "Emails.lst");
+            string emailsFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Emails.lst");
             ReadStringPairsFile(emailsFile, _emails);
         }
 
-        public void WriteConfig(string outputDir)
+        public void WriteConfig()
         {
-            string emailsFile = Path.Combine(outputDir, "Emails.lst");
+            string emailsFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Emails.lst");
             WriteStringPairsFile(emailsFile, _emails);
         }
 
