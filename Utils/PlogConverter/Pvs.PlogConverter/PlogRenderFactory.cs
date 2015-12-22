@@ -300,11 +300,11 @@ namespace ProgramVerificationSystems.PlogConverter
                 {
                     var groupedErrorInfo = groupedErrorInfoMap[analyzerType];
 
-                    int cnt = 0;
+                    //int cnt = 0;
                     foreach (var error in groupedErrorInfo)
                     {
-                        if (++cnt > 13)
-                            break;
+                        //if (++cnt > 13)
+                        //    break;
 
                         SvnInfo.Instance.ParseBlame(error.ErrorInfo.FileName, error.ErrorInfo.LineNumber);
                         OpenFile(SvnInfo.Instance.Author, true, true, analyzerType);
