@@ -100,7 +100,6 @@ namespace ProgramVerificationSystems.PlogConverter
             }
         }
 
-        string _emailsFile;
         Dictionary<string, List<string>> _emails = new Dictionary<string, List<string>>();
 
         public Dictionary<string, List<string>> Emails
