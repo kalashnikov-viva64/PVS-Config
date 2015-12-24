@@ -97,6 +97,10 @@ namespace ProgramVerificationSystems.PlogConverter
             {
                 if (!dictionary[key].Contains(value))
                     dictionary[key].Add(value);
+                if (dictionary[key].Count > 1 && dictionary[key].Contains("none"))
+                {
+                    dictionary[key].Remove("none");
+                }
             }
         }
 
@@ -169,7 +173,7 @@ namespace ProgramVerificationSystems.PlogConverter
             if (!_emails.ContainsKey(author))
             {
                 AddStringPair(_emails, author,
-                    (author != "unknown" && author != "all" && AutoEmail) ? author + "@dalet.com" : "none");
+                    (author != "unknown" && author != "all" && author != "admin" && AutoEmail) ? author + "@dalet.com" : "none");
             }
         }
     }

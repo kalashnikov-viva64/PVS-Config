@@ -30,34 +30,41 @@ namespace ProgramVerificationSystems.PlogConverter
         }
         public static Reporter Instance { get; private set; }
 
-        public void SendEmails(string author, string file, List<string> emails)
+        public void SendEmails(string author, string file, List<string> emails, List<string> adminEmails)
         {
             if (!SendEmail)
                 return;
             try
             {
-                SmtpClient client = new SmtpClient(Server, Port)
+                MailMessage message = new MailMessage()
                 {
-                    Credentials = new NetworkCredential(SmtpUser, SmtpPassword)
+                    From = new MailAddress(FromAddress),
+                    Subject = Header,
+                    IsBodyHtml = true
                 };
-
+                using (StreamReader reader = File.OpenText(file))
+                {
+                    message.Body = reader.ReadToEnd();
+                }
                 foreach (string email in emails)
                 {
                     if (email == "none")
                         continue;
-
-                    using (StreamReader reader = File.OpenText(file))
-                    {
-                        MailMessage message = new MailMessage(FromAddress, email)
-                        {
-                            Subject = Header,
-                            Body = reader.ReadToEnd(),
-                            IsBodyHtml = true
-                        };
-                        client.Send(message);
-                        message.Dispose();
-                    }
+                    message.To.Add(email);
                 }
+                foreach (string adminEmail in adminEmails)
+                {
+                    if (adminEmail == "none")
+                        continue;
+                    message.Bcc.Add(adminEmail);
+                }
+
+                using(SmtpClient client = new SmtpClient(Server, Port))
+                {
+                    client.Credentials = new NetworkCredential(SmtpUser, SmtpPassword);
+                    client.Send(message);
+                }
+                message.Dispose();
             }
             catch (Exception)
             {

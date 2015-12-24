@@ -256,6 +256,11 @@ namespace ProgramVerificationSystems.PlogConverter
 
             public void SendEmails()
             {
+                List<string> adminEmails = new List<string>();
+                if (SvnInfo.Instance.Emails.ContainsKey("admin"))
+                {
+                    adminEmails = SvnInfo.Instance.Emails["admin"];
+                }
                 foreach (var pair in _writers)
                 {
                     string author = pair.Key;
@@ -263,7 +268,7 @@ namespace ProgramVerificationSystems.PlogConverter
                     if (SvnInfo.Instance.Emails.ContainsKey(author))
                     {
                         List<string> emails = SvnInfo.Instance.Emails[author];
-                        Reporter.Instance.SendEmails(author, file, emails);
+                        Reporter.Instance.SendEmails(author, file, emails, adminEmails);
                     }
                 }
             }
@@ -272,6 +277,7 @@ namespace ProgramVerificationSystems.PlogConverter
             {
                 SvnInfo.Instance.ReadConfig();
                 SvnInfo.Instance.AddAuthor("all");
+                SvnInfo.Instance.AddAuthor("admin");
                 if (Errors != null && Errors.Any())
                 {
                     OpenFile("all", true, false);
@@ -300,11 +306,11 @@ namespace ProgramVerificationSystems.PlogConverter
                 {
                     var groupedErrorInfo = groupedErrorInfoMap[analyzerType];
 
-                    //int cnt = 0;
+                    int cnt = 0;
                     foreach (var error in groupedErrorInfo)
                     {
-                        //if (++cnt > 13)
-                        //    break;
+                        if (++cnt > 13)
+                            break;
 
                         SvnInfo.Instance.ParseBlame(error.ErrorInfo.FileName, error.ErrorInfo.LineNumber);
                         OpenFile(SvnInfo.Instance.Author, true, true, analyzerType);
