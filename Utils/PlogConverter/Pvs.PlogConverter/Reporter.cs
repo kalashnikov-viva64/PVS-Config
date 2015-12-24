@@ -58,11 +58,13 @@ namespace ProgramVerificationSystems.PlogConverter
                         continue;
                     message.Bcc.Add(adminEmail);
                 }
-
-                using(SmtpClient client = new SmtpClient(Server, Port))
+                if (message.To.Count > 0)
                 {
-                    client.Credentials = new NetworkCredential(SmtpUser, SmtpPassword);
-                    client.Send(message);
+                    using (SmtpClient client = new SmtpClient(Server, Port))
+                    {
+                        client.Credentials = new NetworkCredential(SmtpUser, SmtpPassword);
+                        client.Send(message);
+                    }
                 }
                 message.Dispose();
             }
