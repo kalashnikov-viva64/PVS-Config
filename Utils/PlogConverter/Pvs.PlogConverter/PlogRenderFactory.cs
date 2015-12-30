@@ -215,7 +215,7 @@ namespace ProgramVerificationSystems.PlogConverter
         private sealed class HtmlPlogRenderer : IPlogRenderer
         {
             public static readonly string _revisionLink = "http://gfn-portal/trac/changeset/{0}";
-            public static readonly string _repoLink = "http://gfn-portal/trac/browser/branches/builds/4.0/src/{0}?rev={1}";
+            public static readonly string _repoLink = "http://gfn-portal/trac/browser/branches/builds/4.0/src/{0}?rev={1}#L{2}";
             private Dictionary<string, HtmlWriter> _writers = new Dictionary<string, HtmlWriter>();
 
             public HtmlPlogRenderer(RenderInfo renderInfo, IEnumerable<ErrorInfoAdapter> errors)
@@ -357,7 +357,7 @@ namespace ProgramVerificationSystems.PlogConverter
                     caseSensFileName = SvnInfo.Instance.CaseSensFileName.Substring("s:\\src\\".Length);
                     caseSensFileName = caseSensFileName.Replace('\\', '/');
                 }
-                caseSensFileName = String.Format(_repoLink, caseSensFileName, SvnInfo.Instance.Revision);
+                caseSensFileName = String.Format(_repoLink, caseSensFileName, SvnInfo.Instance.Revision, error.ErrorInfo.LineNumber);
                 writer.WriteLine("<a href='{0}'>{1} ({2})</a>", caseSensFileName, Path.GetFileName(SvnInfo.Instance.CaseSensFileName),
                     error.ErrorInfo.LineNumber.ToString(CultureInfo.InvariantCulture));
 
