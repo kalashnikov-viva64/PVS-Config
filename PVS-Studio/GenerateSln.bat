@@ -1,6 +1,6 @@
 rem Usage: GenerateSln.bat <Platform>
 rem <Platform> - x86, x64
-@echo on
+@echo off
 @setlocal
 pushd "%~dp0"
 cd /d "%~dp0"
@@ -21,15 +21,19 @@ if %Platform% EQU x64 goto lblx64
 goto lblError
 :lblx86
   call set-daletplus-dev-path.bat
-  call SetMsdevEnv.bat 
-  call tclsh.exe generate_compilation_batch.tcl "s:\src" %build_state% %build_mode% Build ProjectList.txt "%build_batch%" DaletVersion.rc.tmpl "%build_version%" "%build_number%" "%with_symbols%"
+  rem call SetMsdevEnv.bat 
+  call tclsh.exe generate_compilation_batch.tcl "s:\src" ^
+    %build_state% %build_mode% Build ProjectList.txt "%build_batch%" ^
+	DaletVersion.rc.tmpl "%build_version%" "%build_number%" "%with_symbols%"
   if %ERRORLEVEL% NEQ 0 goto lblError
   goto lblEndIf
 
 :lblx64
   call set-daletplus-dev-path-x64.bat
-  call SetMsdevEnvx64.bat
-  call tclsh.exe generate_compilation_batch_x64.tcl "s:\src" %build_state% %build_mode% Build ProjectList-x64.txt "%build_batch%" DaletVersion.rc.tmpl "%build_version%" "%build_number%" "%with_symbols%"
+  rem call SetMsdevEnvx64.bat
+  call tclsh.exe generate_compilation_batch_x64.tcl "s:\src" ^
+    %build_state% %build_mode% Build ProjectList-x64.txt "%build_batch%" ^
+	DaletVersion.rc.tmpl "%build_version%" "%build_number%" "%with_symbols%"
   if %ERRORLEVEL% NEQ 0 goto lblError
   goto lblEndIf
 :lblEndIf

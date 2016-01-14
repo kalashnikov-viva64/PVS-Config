@@ -1,35 +1,34 @@
-rem Usage: ClearWorkspace.bat <PVS_Platform>
-rem <PVS_Platform> - Dalet_x86_trunk, Dalet_x64_trunk
+rem Usage: 5_ClearWorkspace.bat <PVS_Platform>
+rem <PVS_Platform> - x86, x64
 @echo on
 @setlocal
-
+pushd %~dp0
+cd /d %~dp0
 set PVS_Platform=%1
-set LastError=0
 
-if %PVS_Platform% EQU Dalet_x86_trunk goto lblDalet_x86_trunk
-if %PVS_Platform% EQU Dalet_x64_trunk goto lblDalet_x64_trunk
+if %PVS_Platform% EQU x86 goto lblx86
+if %PVS_Platform% EQU x64 goto lblx64
 goto lblError
-:lblDalet_x86_trunk
-  rem Del Parts
-  cd /d "C:\PVS Dalet logs x86 trunk\temp"
-  del generated-x86-projects_?.plog
-  del generated-x86-projects_?_WithSuppressedMessages.plog
-
-  rem delete temp folder
-  cd /d "C:\PVS Dalet logs x86 trunk\"
-  del /Q temp
+:lblx86
+  del s:\src\env\MasterBuild\generated-all-projects-with-dependencies_?.sln
+  del "C:\PVS Dalet logs x86 trunk\temp\generated-x86-projects_?.plog"
+  del "C:\PVS Dalet logs x86 trunk\temp\generated-x86-projects_?_WithSuppressedMessages.plog"
+  del /Q "C:\PVS Dalet logs x86 trunk\temp"
   goto lblEndIf
-  
-:lblDalet_x64_trunk
+:lblx64
+  del s:\src\env\MasterBuild\generated-x64-projects_?.sln
+  del "C:\PVS Dalet logs x64 trunk\temp\generated-x64-projects_?.plog"
+  del "C:\PVS Dalet logs x64 trunk\temp\generated-x64-projects_?_WithSuppressedMessages.plog"
+  del /Q "C:\PVS Dalet logs x64 trunk\temp"
   goto lblEndIf
 :lblEndIf
 
-if %LastError% NEQ 0 goto lblError
-
+:lblAllOk
+popd
 @endlocal
 exit /b 0
 
 :lblError
+popd
 @endlocal
-exit /b 1
-
+exit /b 2
