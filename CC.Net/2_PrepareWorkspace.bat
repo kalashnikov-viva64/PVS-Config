@@ -12,7 +12,6 @@ if %PVS_Platform% EQU x86 goto lblx86
 if %PVS_Platform% EQU x64 goto lblx64
 goto lblError
 :lblx86
-  cd /d c:\
   mkdir "C:\PVS Dalet logs x86 trunk"
   mkdir "C:\PVS Dalet logs x86 trunk\temp"
   mkdir "S:\src_suppress_x86_trunk"
@@ -28,7 +27,6 @@ goto lblError
     /Y c:\PVS-Config\IncrediBuild\Old-Dalet-Settings-x86.xml %appdata%\PVS-Studio\Settings.xml
   goto lblEndIf
 :lblx64
-  cd /d c:\
   mkdir "C:\PVS Dalet logs x64 trunk"
   mkdir "C:\PVS Dalet logs x64 trunk\temp"
   mkdir "S:\src_suppress_x64_trunk"

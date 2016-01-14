@@ -21,8 +21,8 @@ goto lblError
   rem PlogConverter
   cd /d "C:\PVS Dalet logs x86 trunk\temp"
   call C:\PVS-Config\Utils\PlogConverter\Pvs.PlogConverter\bin\Debug\PlogConverter.exe ^
-    -p generated-x86-projects.plog -a GA:1,2;64:1 --header="[auto] PVS-Studio Analysis x86 Results" ^
-    --server=212.143.237.10 --port=26 --fromAddress=buildmaster@dalet.com
+    -p generated-x86-projects.plog -a GA:1,2 --header="[auto] PVS-Studio Analysis x86 Results" ^
+	--server=212.143.237.10 --port=26 --fromAddress=buildmaster@dalet.com --autoEmail --sendEmail
   if %ERRORLEVEL% NEQ 0 set LastError=%ERRORLEVEL%
   
   rem Update suppress bases
@@ -41,7 +41,7 @@ goto lblError
   rem PlogConverter
   cd /d "C:\PVS Dalet logs x64 trunk\temp"
   call C:\PVS-Config\Utils\PlogConverter\Pvs.PlogConverter\bin\Debug\PlogConverter.exe ^
-    -p generated-x64-projects.plog -a GA:1,2;64:1 --header="[auto] PVS-Studio Analysis x64 Results" ^
+    -p generated-x64-projects.plog -a 64:1 --header="[auto] PVS-Studio Analysis x64 Results" ^
 	--server=212.143.237.10 --port=26 --fromAddress=buildmaster@dalet.com --autoEmail --sendEmail
   if %ERRORLEVEL% NEQ 0 set LastError=%ERRORLEVEL%
   
