@@ -21,7 +21,7 @@ if %Platform% EQU x64 goto lblx64
 goto lblError
 :lblx86
   call set-daletplus-dev-path.bat
-  rem call SetMsdevEnv.bat 
+  call SetMsdevEnv.bat 
   call tclsh.exe generate_compilation_batch.tcl "s:\src" ^
     %build_state% %build_mode% Build ProjectList.txt "%build_batch%" ^
 	DaletVersion.rc.tmpl "%build_version%" "%build_number%" "%with_symbols%"
@@ -30,7 +30,7 @@ goto lblError
 
 :lblx64
   call set-daletplus-dev-path-x64.bat
-  rem call SetMsdevEnvx64.bat
+  call SetMsdevEnvx64.bat
   call tclsh.exe generate_compilation_batch_x64.tcl "s:\src" ^
     %build_state% %build_mode% Build ProjectList-x64.txt "%build_batch%" ^
 	DaletVersion.rc.tmpl "%build_version%" "%build_number%" "%with_symbols%"

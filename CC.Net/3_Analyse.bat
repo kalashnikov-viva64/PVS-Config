@@ -7,6 +7,7 @@ pushd %~dp0
 cd /d %~dp0
 set PVS_Platform=%1
 set PVS_IncrediBuild=%2
+echo %TIME%: Starting 3_Analyse.bat
 
 if %PVS_Platform% EQU x86 if %PVS_IncrediBuild% EQU UseIB goto lblx86_UseIB
 if %PVS_Platform% EQU x86 if %PVS_IncrediBuild% EQU NotUseIB goto lblx86_NotUseIB
