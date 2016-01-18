@@ -1,4 +1,4 @@
-rem Usage: 4_PublicationResults.bat <PVS_Platform>
+rem Usage: PublicationResults.bat <PVS_Platform> <PVS_Folder>
 rem <PVS_Platform> - x86, x64
 rem <PVS_PlogFile> - Full/New
 rem <PVS_Folder> - folder
@@ -18,13 +18,6 @@ if %PVS_Platform% EQU x86 goto lblx86
 if %PVS_Platform% EQU x64 goto lblx64
 goto lblError
 :lblx86
-  rem PlogCombiner
-  cd /d %PVS_Folder%
-  call c:\PVS-Config\PVS-Studio\PlogCombiner.exe %PVS_Folder%\generated-x86-projects{0}.plog 3
-  rem if %ERRORLEVEL% NEQ 0 set LastError=%ERRORLEVEL%
-  call c:\PVS-Config\PVS-Studio\PlogCombiner.exe %PVS_Folder%\generated-x86-projects{0}_WithSuppressedMessages.plog 3
-  rem if %ERRORLEVEL% NEQ 0 set LastError=%ERRORLEVEL%
-
   rem PlogConverter
   cd /d %PVS_Folder%
   call C:\PVS-Config\PVS-Studio\PlogConverter.exe ^
@@ -39,13 +32,6 @@ goto lblError
   goto lblEndIf
 
 :lblx64
-  rem PlogCombiner
-  cd /d %PVS_Folder%
-  call c:\PVS-Config\PVS-Studio\PlogCombiner.exe %PVS_Folder%\generated-x64-projects{0}.plog 3
-  rem if %ERRORLEVEL% NEQ 0 set LastError=%ERRORLEVEL%
-  call c:\PVS-Config\PVS-Studio\PlogCombiner.exe %PVS_Folder%\generated-x64-projects{0}_WithSuppressedMessages.plog 3
-  rem if %ERRORLEVEL% NEQ 0 set LastError=%ERRORLEVEL%
-  
   rem PlogConverter
   cd /d %PVS_Folder%
   call C:\PVS-Config\PVS-Studio\PlogConverter.exe ^

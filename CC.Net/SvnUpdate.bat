@@ -1,4 +1,4 @@
-rem Usage: 1_SvnUpdate.bat
+rem Usage: SvnUpdate.bat
 @echo on
 @setlocal
 pushd %~dp0

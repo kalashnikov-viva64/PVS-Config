@@ -1,12 +1,14 @@
-rem Usage: 3_Analyse.bat <PVS_Platform> <PVS_IncrediBuild>
+rem Usage: Analyse.bat <PVS_Platform> <PVS_IncrediBuild> <PVS_Folder>
 rem <PVS_Platform> - x86, x64
 rem <PVS_IncrediBuild> - UseIB, NotUseIB
+rem <PVS_Folder> - folder
 @echo on
 @setlocal
 pushd %~dp0
 cd /d %~dp0
 set PVS_Platform=%1
 set PVS_IncrediBuild=%2
+set PVS_Folder=%3
 echo %TIME%: Starting 3_Analyse.bat
 
 if %PVS_Platform% EQU x86 if %PVS_IncrediBuild% EQU UseIB goto lblx86_UseIB
@@ -38,6 +40,22 @@ goto lblError
   call c:\PVS-Config\PVS-Studio\PVS-Analyse.bat Dalet_x64_trunk 333 3
   goto lblEndIf
 :lblEndIf
+
+rem PlogCombiner
+cd /d %PVS_Folder%
+if %PVS_Platform% EQU x64 goto lblx64
+:lblx86
+  call c:\PVS-Config\PVS-Studio\PlogCombiner.exe %PVS_Folder%\generated-x86-projects{0}.plog 3
+  if %ERRORLEVEL% NEQ 0 goto lblError
+  call c:\PVS-Config\PVS-Studio\PlogCombiner.exe %PVS_Folder%\generated-x86-projects{0}_WithSuppressedMessages.plog 3
+  if %ERRORLEVEL% NEQ 0 goto lblError
+  goto lblEndIf2
+:lblx64
+  call c:\PVS-Config\PVS-Studio\PlogCombiner.exe %PVS_Folder%\generated-x64-projects{0}.plog 3
+  if %ERRORLEVEL% NEQ 0 goto lblError
+  call c:\PVS-Config\PVS-Studio\PlogCombiner.exe %PVS_Folder%\generated-x64-projects{0}_WithSuppressedMessages.plog 3
+  if %ERRORLEVEL% NEQ 0 goto lblError
+:lblEndIf2
 
 :lblAllOk
 popd

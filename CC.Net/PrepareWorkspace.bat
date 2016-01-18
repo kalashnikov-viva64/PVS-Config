@@ -1,4 +1,4 @@
-rem Usage: 2_PrepareWorkspace.bat <PVS_Platform> <PVS_IncrediBuild>
+rem Usage: PrepareWorkspace.bat <PVS_Platform> <PVS_IncrediBuild>
 rem <PVS_Platform> - x86, x64
 rem <PVS_IncrediBuild> - UseIB, NotUseIB
 @echo on

@@ -1,4 +1,4 @@
-rem Usage: 5_ClearWorkspace.bat <PVS_Platform>
+rem Usage: ClearWorkspace.bat <PVS_Platform>
 rem <PVS_Platform> - x86, x64
 @echo on
 @setlocal
@@ -12,14 +12,14 @@ if %PVS_Platform% EQU x64 goto lblx64
 goto lblError
 :lblx86
   del s:\src\env\MasterBuild\generated-all-projects-with-dependencies_?.sln
-  del "C:\PVS Dalet logs x86 trunk\temp\generated-x86-projects_?.plog"
-  del "C:\PVS Dalet logs x86 trunk\temp\generated-x86-projects_?_WithSuppressedMessages.plog"
+  rem del "C:\PVS Dalet logs x86 trunk\temp\generated-x86-projects_?.plog"
+  rem del "C:\PVS Dalet logs x86 trunk\temp\generated-x86-projects_?_WithSuppressedMessages.plog"
   del /Q "C:\PVS Dalet logs x86 trunk\temp"
   goto lblEndIf
 :lblx64
   del s:\src\env\MasterBuild\generated-x64-projects_?.sln
-  del "C:\PVS Dalet logs x64 trunk\temp\generated-x64-projects_?.plog"
-  del "C:\PVS Dalet logs x64 trunk\temp\generated-x64-projects_?_WithSuppressedMessages.plog"
+  rem del "C:\PVS Dalet logs x64 trunk\temp\generated-x64-projects_?.plog"
+  rem del "C:\PVS Dalet logs x64 trunk\temp\generated-x64-projects_?_WithSuppressedMessages.plog"
   del /Q "C:\PVS Dalet logs x64 trunk\temp"
   goto lblEndIf
 :lblEndIf

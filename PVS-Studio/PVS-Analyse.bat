@@ -21,6 +21,7 @@ goto lblError
   set PVS_Solution=generated-all-projects-with-dependencies_%PVS_NumPart%.sln
   set PVS_PlogDir=C:\PVS Dalet logs x86 trunk\temp
   set PVS_PlogFile=%PVS_PlogDir%\generated-x86-projects_%PVS_NumPart%.plog
+  set PVS_PlogFileWithSuppress=%PVS_PlogDir%\generated-x86-projects_%PVS_NumPart%_WithSuppressedMessages.plog
   set PVS_PluginExec="PVSStudio.CheckSolution Win32|Release|%PVS_PlogFile%|||SuppressAll"
   cd /d S:\src\env\MasterBuild
   call set-daletplus-dev-path.bat
@@ -32,6 +33,7 @@ goto lblError
   set PVS_Solution=generated-x64-projects_%PVS_NumPart%.sln
   set PVS_PlogDir=C:\PVS Dalet logs x64 trunk\temp
   set PVS_PlogFile=%PVS_PlogDir%\generated-x64-projects_%PVS_NumPart%.plog
+  set PVS_PlogFileWithSuppress=%PVS_PlogDir%\generated-x64-projects_%PVS_NumPart%_WithSuppressedMessages.plog
   set PVS_PluginExec="PVSStudio.CheckSolution x64|Release|%PVS_PlogFile%|||SuppressAll"
   cd /d S:\src\env\MasterBuild
   call set-daletplus-dev-path-x64.bat
@@ -108,5 +110,8 @@ set /a CntMax="%PVS_DelayMin%*4"
 exit /b 2
 
 :lblAllOk
+	if exist %PVS_PlogFileWithSuppress% goto lblWithSuppress
+	copy %PVS_PlogFile% %PVS_PlogFileWithSuppress%
+:lblWithSuppress
 @endlocal
 exit /b 0

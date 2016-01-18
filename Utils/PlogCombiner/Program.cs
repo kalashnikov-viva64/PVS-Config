@@ -139,8 +139,8 @@ namespace PlogCombiner
                 String partFile = String.Format(plogFile, "_"+i);
                 String lastError;
 
-                if (!File.Exists(partFile))
-                    continue;
+                //if (!File.Exists(partFile))
+                //    continue;
 
                 if (!ReadPlog(partFile, partMessageTable, partMetaTable, out lastError))
                 {
