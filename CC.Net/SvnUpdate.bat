@@ -3,7 +3,7 @@ rem Usage: SvnUpdate.bat
 @setlocal
 pushd %~dp0
 cd /d %~dp0
-echo %TIME%: Starting 1_SvnUpdate.bat
+echo %TIME%: Starting SvnUpdate.bat
 
 rem Cleaning repositories, deletion unversioned files, updating.
 pushd S:\src

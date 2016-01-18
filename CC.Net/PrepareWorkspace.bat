@@ -7,7 +7,7 @@ pushd %~dp0
 cd /d %~dp0
 set PVS_Platform=%1
 set PVS_IncrediBuild=%2
-echo %TIME%: Starting 2_PrepareWorkspace.bat
+echo %TIME%: Starting PrepareWorkspace.bat
 
 if %PVS_Platform% EQU x86 goto lblx86
 if %PVS_Platform% EQU x64 goto lblx64

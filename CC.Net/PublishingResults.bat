@@ -12,7 +12,7 @@ set PVS_Folder=%3
 set LastError=0
 set PlogFile=generated-x86-projects.plog
 if %PVS_PlogFile% EQU Full set PlogFile=generated-x86-projects_WithSuppressedMessages.plog
-echo %TIME%: Starting 4_PublicationResults.bat
+echo %TIME%: Starting PublicationResults.bat
 
 if %PVS_Platform% EQU x86 goto lblx86
 if %PVS_Platform% EQU x64 goto lblx64

@@ -5,7 +5,7 @@ rem <PVS_Platform> - x86, x64
 pushd %~dp0
 cd /d %~dp0
 set PVS_Platform=%1
-echo %TIME%: Starting 5_ClearWorkspace.bat
+echo %TIME%: Starting ClearWorkspace.bat
 
 if %PVS_Platform% EQU x86 goto lblx86
 if %PVS_Platform% EQU x64 goto lblx64
