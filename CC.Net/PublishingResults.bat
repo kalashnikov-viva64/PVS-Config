@@ -1,23 +1,30 @@
-rem Usage: PublicationResults.bat <PVS_Platform> <PVS_Folder>
+rem Usage: PublishingResults.bat <PVS_Platform> <PVS_Folder>
 rem <PVS_Platform> - x86, x64
-rem <PVS_PlogFile> - Full/New
 rem <PVS_Folder> - folder
 @echo on
 @setlocal
 pushd %~dp0
 cd /d %~dp0
 set PVS_Platform=%1
-set PVS_PlogFile=%2
-set PVS_Folder=%3
+set PVS_Folder=%2
 set LastError=0
-set PlogFile=generated-x86-projects.plog
-if %PVS_PlogFile% EQU Full set PlogFile=generated-x86-projects_WithSuppressedMessages.plog
-echo %TIME%: Starting PublicationResults.bat
+echo %TIME%: Starting PublishingResults.bat
+
+rem Day of week
+for /F "tokens=1-4 delims=/ " %%i in ('date /t') do (
+set WeekDay=%%i
+set D=%%j
+set M=%%k
+set Y=%%l
+) 
 
 if %PVS_Platform% EQU x86 goto lblx86
 if %PVS_Platform% EQU x64 goto lblx64
 goto lblError
 :lblx86
+  set PlogFile=generated-x86-projects.plog
+  if %WeekDay% EQU Sun set PlogFile=generated-x86-projects_WithSuppressedMessages.plog
+
   rem PlogConverter
   cd /d %PVS_Folder%
   call C:\PVS-Config\PVS-Studio\PlogConverter.exe ^
@@ -26,12 +33,14 @@ goto lblError
   if %ERRORLEVEL% NEQ 0 set LastError=%ERRORLEVEL%
   
   rem Update suppress bases
-  @echo off
   robocopy "S:\src" "S:\src_suppress_x86_trunk" *.suppress /s /IS
   if %ERRORLEVEL% NEQ 0 set LastError=%ERRORLEVEL%
   goto lblEndIf
 
 :lblx64
+  set PlogFile=generated-x64-projects.plog
+  if %WeekDay% EQU Sun set PlogFile=generated-x64-projects_WithSuppressedMessages.plog
+  
   rem PlogConverter
   cd /d %PVS_Folder%
   call C:\PVS-Config\PVS-Studio\PlogConverter.exe ^
@@ -40,7 +49,6 @@ goto lblError
   if %ERRORLEVEL% NEQ 0 set LastError=%ERRORLEVEL%
   
   rem Update suppress bases
-  @echo off
   robocopy "S:\src" "S:\src_suppress_x64_trunk" *.suppress /s /IS
   if %ERRORLEVEL% NEQ 0 set LastError=%ERRORLEVEL%
   goto lblEndIf
