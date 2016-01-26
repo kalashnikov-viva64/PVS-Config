@@ -34,7 +34,6 @@ goto lblError
   
   rem Update suppress bases
   robocopy "S:\src" "S:\src_suppress_x86_trunk" *.suppress /s /IS
-  if %ERRORLEVEL% NEQ 0 set LastError=%ERRORLEVEL%
   goto lblEndIf
 
 :lblx64
@@ -50,7 +49,6 @@ goto lblError
   
   rem Update suppress bases
   robocopy "S:\src" "S:\src_suppress_x64_trunk" *.suppress /s /IS
-  if %ERRORLEVEL% NEQ 0 set LastError=%ERRORLEVEL%
   goto lblEndIf
 :lblEndIf
   if %LastError% NEQ 0 goto lblError
