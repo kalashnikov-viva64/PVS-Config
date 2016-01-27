@@ -28,7 +28,7 @@ goto lblError
   rem PlogConverter
   cd /d %PVS_Folder%
   call C:\PVS-Config\PVS-Studio\PlogConverter.exe ^
-    -p %PlogFile% -a GA:1,2 --header="[auto] PVS-Studio Analysis x86 Results" ^
+    -p %PlogFile% -a GA:1,2;64:1 --header="[auto] PVS-Studio Analysis x86 Results" ^
 	--server=212.143.237.10 --port=26 --fromAddress=buildmaster@dalet.com --autoEmail --sendEmail
   if %ERRORLEVEL% NEQ 0 set LastError=%ERRORLEVEL%
   
@@ -43,7 +43,7 @@ goto lblError
   rem PlogConverter
   cd /d %PVS_Folder%
   call C:\PVS-Config\PVS-Studio\PlogConverter.exe ^
-    -p %PlogFile% -a 64:1 --header="[auto] PVS-Studio Analysis x64 Results" ^
+    -p %PlogFile% -a GA:1,2;64:1 --header="[auto] PVS-Studio Analysis x64 Results" ^
 	--server=212.143.237.10 --port=26 --fromAddress=buildmaster@dalet.com --autoEmail --sendEmail
   if %ERRORLEVEL% NEQ 0 set LastError=%ERRORLEVEL%
   
