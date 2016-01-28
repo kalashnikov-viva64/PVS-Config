@@ -99,6 +99,7 @@ namespace ProgramVerificationSystems.PlogConverter
             Reporter.Instance.FromAddress = converterOptions.FromAddress;
             Reporter.Instance.SendEmail = converterOptions.SendEmail;
             SvnInfo.Instance.AutoEmail = converterOptions.AutoEmail;
+            SvnInfo.Instance.EmailList = converterOptions.EmailList;
 
             parsedArgs.RenderInfo.Plog = converterOptions.PlogPath;
             parsedArgs.RenderInfo.OutputDir = converterOptions.OutputPath ?? DefaultOutputFolder;

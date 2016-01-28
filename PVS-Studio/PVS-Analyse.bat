@@ -2,7 +2,7 @@ rem Usage: PVS-Analyse.bat <PVS_Platform> <PVS_DelayMin> <PVS_NumPart>
 rem <PVS_Platform> - Dalet_x86_trunk, Dalet_x64_trunk, Amberfin_x64
 rem <PVS_DelayMin> - build time in minutes
 rem <PVS_NumPart> - number of parts
-@echo off
+@echo on
 @setlocal
 
 rem Command line parameters
@@ -44,10 +44,12 @@ goto lblError
   call set-amberfin-paths.bat x64 Release
   rem set PVS_MSVC=C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.com
   set PVS_MSVC=%Amberfin_Compiler%
-  set PVS_SolutionDir=%Amberfin_Workspace%
-  set PVS_Solution=all_projects.sln
+  rem set PVS_SolutionDir=%Amberfin_Workspace%
+  set PVS_SolutionDir=F:\ANT-Build\ANT-Workspace\libdsp\libdspdev\build\ms100_libdsp\
+  set PVS_Solution=ms100_libdsp.sln
   set PVS_PlogDir=C:\PVS_Amberfin_x64\temp
   set PVS_PlogFile=%PVS_PlogDir%\PVS_Amberfin_x64.plog
+  set PVS_PlogFileWithSuppress=%PVS_PlogDir%\PVS_Amberfin_x64_WithSuppressedMessages.plog
   set PVS_PluginExec="PVSStudio.CheckSolution x64|Release|%PVS_PlogFile%|||SuppressAll"
   goto lblEndIf
 :lblEndIf

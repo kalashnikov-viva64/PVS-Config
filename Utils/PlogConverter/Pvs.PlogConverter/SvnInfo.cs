@@ -113,6 +113,8 @@ namespace ProgramVerificationSystems.PlogConverter
                 return _emails;
             }
         }
+
+        public string EmailList { get; set; }
         public long Revision { get; set; }
         public string Author { get; set; }
         public string CaseSensFileName { get; set; }
@@ -129,13 +131,13 @@ namespace ProgramVerificationSystems.PlogConverter
 
         public void ReadConfig()
         {
-            string emailsFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Emails.lst");
+            string emailsFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, EmailList);
             ReadStringPairsFile(emailsFile, _emails);
         }
 
         public void WriteConfig()
         {
-            string emailsFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Emails.lst");
+            string emailsFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, EmailList);
             WriteStringPairsFile(emailsFile, _emails);
         }
 

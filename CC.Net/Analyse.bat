@@ -11,11 +11,16 @@ set PVS_IncrediBuild=%2
 set PVS_Folder=%3
 echo %TIME%: Starting Analyse.bat
 
+if %PVS_Platform% EQU Amberfin_x64 goto lblAmberfin_x64
 if %PVS_Platform% EQU x86 if %PVS_IncrediBuild% EQU UseIB goto lblx86_UseIB
 if %PVS_Platform% EQU x86 if %PVS_IncrediBuild% EQU NotUseIB goto lblx86_NotUseIB
 if %PVS_Platform% EQU x64 if %PVS_IncrediBuild% EQU UseIB goto lblx64_UseIB
 if %PVS_Platform% EQU x64 if %PVS_IncrediBuild% EQU NotUseIB goto lblx64_NotUseIB
 goto lblError
+:lblAmberfin_x64
+  call c:\PVS-Config\PVS-Studio\PVS-Analyse.bat Amberfin_x64 333 1
+  goto lblEndIf2
+
 :lblx86_UseIB
   call "C:\Program Files (x86)\Xoreax\IncrediBuild\ibconsole.exe" ^
 	/command="c:\PVS-Config\PVS-Studio\PVS-Analyse.bat Dalet_x86_trunk 333 1 && c:\PVS-Config\PVS-Studio\PVS-Analyse.bat Dalet_x86_trunk 333 2 && c:\PVS-Config\PVS-Studio\PVS-Analyse.bat Dalet_x86_trunk 333 3" ^

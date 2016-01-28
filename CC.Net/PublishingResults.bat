@@ -18,9 +18,20 @@ set M=%%k
 set Y=%%l
 ) 
 
+if %PVS_Platform% EQU Amberfin_x64 goto lblAmberfin_x64
 if %PVS_Platform% EQU x86 goto lblx86
 if %PVS_Platform% EQU x64 goto lblx64
 goto lblError
+:lblAmberfin_x64
+  set PlogFile=PVS_Amberfin_x64_WithSuppressedMessages.plog
+  cd /d %PVS_Folder%
+  call C:\PVS-Config\PVS-Studio\PlogConverter.exe ^
+    -p %PlogFile% -a GA:1,2;64:1 --emailList="Emails_Amberfin.lst" --header="[auto] PVS-Studio Amberfin x64 Results" ^
+	--server=212.143.237.10 --port=26 --fromAddress=buildmaster@dalet.com --autoEmail
+	rem --sendEmail
+  if %ERRORLEVEL% NEQ 0 set LastError=%ERRORLEVEL%  
+  goto lblEndIf
+  
 :lblx86
   set PlogFile=generated-x86-projects.plog
   if %WeekDay% EQU Sun set PlogFile=generated-x86-projects_WithSuppressedMessages.plog
@@ -28,7 +39,7 @@ goto lblError
   rem PlogConverter
   cd /d %PVS_Folder%
   call C:\PVS-Config\PVS-Studio\PlogConverter.exe ^
-    -p %PlogFile% -a GA:1,2;64:1 --header="[auto] PVS-Studio Analysis x86 Results" ^
+    -p %PlogFile% -a GA:1,2;64:1 --emailList="Emails.lst" --header="[auto] PVS-Studio Analysis x86 Results" ^
 	--server=212.143.237.10 --port=26 --fromAddress=buildmaster@dalet.com --autoEmail --sendEmail
   if %ERRORLEVEL% NEQ 0 set LastError=%ERRORLEVEL%
   
@@ -43,7 +54,7 @@ goto lblError
   rem PlogConverter
   cd /d %PVS_Folder%
   call C:\PVS-Config\PVS-Studio\PlogConverter.exe ^
-    -p %PlogFile% -a GA:1,2;64:1 --header="[auto] PVS-Studio Analysis x64 Results" ^
+    -p %PlogFile% -a GA:1,2;64:1 --emailList="Emails.lst" --header="[auto] PVS-Studio Analysis x64 Results" ^
 	--server=212.143.237.10 --port=26 --fromAddress=buildmaster@dalet.com --autoEmail --sendEmail
   if %ERRORLEVEL% NEQ 0 set LastError=%ERRORLEVEL%
   

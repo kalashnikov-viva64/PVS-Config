@@ -55,6 +55,9 @@ namespace ProgramVerificationSystems.PlogConverter
 
 
         // email options
+        /// <example>--emailList="Emails.lst"</example>
+        [Option("emailList", DefaultValue = "Emails.lst")]
+        public string EmailList { get; set; }
         /// <example>--header="[auto] PVS-Studio Analysis x64 Results"</example>
         [Option("header", DefaultValue = "")]
         public string Header { get; set; }
