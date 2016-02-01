@@ -216,6 +216,8 @@ namespace ProgramVerificationSystems.PlogConverter
         {
             public static readonly string _revisionLink = "http://gfn-portal/trac/changeset/{0}";
             public static readonly string _repoLink = "http://gfn-portal/trac/browser/branches/builds/4.0/src/{0}?rev={1}#L{2}";
+            public static readonly string _repoLink2 = "http://gfn-portal/trac/browser/amberfin/products/libdsp/trunk/{0}?rev={1}#L{2}";
+            public static readonly string _repoLink3 = "http://gfn-portal/trac/browser/amberfin/products/amberfin/trunk/{0}?rev={1}#L{2}";
             private Dictionary<string, HtmlWriter> _writers = new Dictionary<string, HtmlWriter>();
 
             public HtmlPlogRenderer(RenderInfo renderInfo, IEnumerable<ErrorInfoAdapter> errors)
@@ -356,8 +358,21 @@ namespace ProgramVerificationSystems.PlogConverter
                 {
                     caseSensFileName = SvnInfo.Instance.CaseSensFileName.Substring("s:\\src\\".Length);
                     caseSensFileName = caseSensFileName.Replace('\\', '/');
+                    caseSensFileName = String.Format(_repoLink, caseSensFileName, SvnInfo.Instance.Revision, error.ErrorInfo.LineNumber);
                 }
-                caseSensFileName = String.Format(_repoLink, caseSensFileName, SvnInfo.Instance.Revision, error.ErrorInfo.LineNumber);
+                else if (SvnInfo.Instance.CaseSensFileName.IndexOf("f:\\ANT-Build\\ANT-Workspace\\libdsp\\") == 0)
+                {
+                    caseSensFileName = SvnInfo.Instance.CaseSensFileName.Substring("f:\\ANT-Build\\ANT-Workspace\\libdsp\\".Length);
+                    caseSensFileName = caseSensFileName.Replace('\\', '/');
+                    caseSensFileName = String.Format(_repoLink2, caseSensFileName, SvnInfo.Instance.Revision, error.ErrorInfo.LineNumber);
+                }
+                else if (SvnInfo.Instance.CaseSensFileName.IndexOf("f:\\ANT-Build\\ANT-Workspace\\AmberfinTrunkTests\\") == 0)
+                {
+                    caseSensFileName = SvnInfo.Instance.CaseSensFileName.Substring("f:\\ANT-Build\\ANT-Workspace\\AmberfinTrunkTests\\".Length);
+                    caseSensFileName = caseSensFileName.Replace('\\', '/');
+                    caseSensFileName = String.Format(_repoLink3, caseSensFileName, SvnInfo.Instance.Revision, error.ErrorInfo.LineNumber);
+                }
+                
                 writer.WriteLine("<a href='{0}'>{1} ({2})</a>", caseSensFileName, Path.GetFileName(SvnInfo.Instance.CaseSensFileName),
                     error.ErrorInfo.LineNumber.ToString(CultureInfo.InvariantCulture));
 
