@@ -16,6 +16,7 @@ if %PVS_Team% NEQ Dalet goto lblEndUpdater
   cd /d "C:\PVS Dalet logs x64 trunk\temp\"
   copy /Y "c:\Program Files (x86)\PVS-Studio\PVS-Studio-Updater.exe" PVS-Studio-Updater.exe
   call PVS-Studio-Updater.exe /VERYSILENT /SUPPRESSMSGBOXES
+  del PVS-Studio-Updater.exe
 :lblEndUpdater
 if %PVS_Team% EQU Viva call \\Viva64-build\Builder\PVS-Studio_setup.exe ^
   /VERYSILENT /SUPPRESSMSGBOXES /COMPONENTS=Core,Standalone,MSVS,MSVS\2010,MSVS\2012
