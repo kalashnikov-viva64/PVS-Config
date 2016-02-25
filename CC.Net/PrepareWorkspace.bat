@@ -46,7 +46,7 @@ goto lblError
   mkdir "C:\PVS Dalet logs x64 trunk"
   mkdir "C:\PVS Dalet logs x64 trunk\temp"
   mkdir "S:\src_suppress_x64_trunk"
-  rem robocopy "s:\src_suppress_x64_trunk" "s:\src" *.suppress /s /IS
+  robocopy "s:\src_suppress_x64_trunk" "s:\src" *.suppress /s /IS
   call c:\PVS-Config\PVS-Studio\GenerateSln.bat x64
   if %ERRORLEVEL% NEQ 0 goto lblError
   call c:\PVS-Config\PVS-Studio\SlnSplitter.py ^
