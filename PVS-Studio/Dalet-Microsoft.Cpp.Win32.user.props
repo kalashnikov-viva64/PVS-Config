@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets">
+    <Import Project="S:\src\cpp\Dalet.props" />
+  </ImportGroup>
+  <PropertyGroup>
+    <ExecutablePath>C:\DaletNews\Xtreme Skin Framework v15.2.1\Bin\vc100;$(ExecutablePath)</ExecutablePath>
+    <IncludePath>C:\DaletNews\Xtreme Skin Framework v15.2.1\Source;S:\Xtreme Skin Framework v15.2.1\Source;$(IncludePath)</IncludePath>
+    <ReferencePath>$(ReferencePath)</ReferencePath>
+    <LibraryPath>C:\DaletNews\Xtreme Skin Framework v15.2.1\Lib\vc100;S:\Xtreme Skin Framework v15.2.1\Lib\vc100;$(LibraryPath)</LibraryPath>
+    <SourcePath>C:\DaletNews\Xtreme Skin Framework v15.2.1\Source;S:\Xtreme Skin Framework v15.2.1\Source;S:\loki-0.1.6\include;$(SourcePath)</SourcePath>
+    <ExcludePath>
+    </ExcludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+</Project>
