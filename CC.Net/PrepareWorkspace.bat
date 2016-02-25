@@ -12,8 +12,11 @@ set PVS_Team=%3
 echo %TIME%: Starting PrepareWorkspace.bat
 
 rem Install last build of PVS-Studio
-if %PVS_Team% EQU Dalet call "c:\Program Files (x86)\PVS-Studio\PVS-Studio-Updater.exe" ^
-  /VERYSILENT /SUPPRESSMSGBOXES
+if %PVS_Team% NEQ Dalet goto lblEndUpdater
+  cd /d "C:\PVS Dalet logs x64 trunk\temp\"
+  copy /Y "c:\Program Files (x86)\PVS-Studio\PVS-Studio-Updater.exe" PVS-Studio-Updater.exe
+  call PVS-Studio-Updater.exe /VERYSILENT /SUPPRESSMSGBOXES
+:lblEndUpdater
 if %PVS_Team% EQU Viva call \\Viva64-build\Builder\PVS-Studio_setup.exe ^
   /VERYSILENT /SUPPRESSMSGBOXES /COMPONENTS=Core,Standalone,MSVS,MSVS\2010,MSVS\2012
 if %ERRORLEVEL% NEQ 0 goto lblError
@@ -43,7 +46,7 @@ goto lblError
   mkdir "C:\PVS Dalet logs x64 trunk"
   mkdir "C:\PVS Dalet logs x64 trunk\temp"
   mkdir "S:\src_suppress_x64_trunk"
-  robocopy "s:\src_suppress_x64_trunk" "s:\src" *.suppress /s /IS
+  rem robocopy "s:\src_suppress_x64_trunk" "s:\src" *.suppress /s /IS
   call c:\PVS-Config\PVS-Studio\GenerateSln.bat x64
   if %ERRORLEVEL% NEQ 0 goto lblError
   call c:\PVS-Config\PVS-Studio\SlnSplitter.py ^
