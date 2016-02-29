@@ -54,7 +54,7 @@ goto lblError
 
   rem PlogConverter
   cd /d %PVS_Folder%
-  call C:\PVS-Config\PVS-Studio\PlogConverter.exe -p %PlogFile% -a GA:1,2;64:1
+  call "c:\Program Files (x86)\PVS-Studio\PlogConverter.exe" -p %PlogFile% -a GA:1,2;64:1
   if %ERRORLEVEL% NEQ 0 set LastError=%ERRORLEVEL%
   call c:\sendemail\sendemail.exe ^
 	-f builder@viva64.com ^
