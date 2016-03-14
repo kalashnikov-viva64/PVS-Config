@@ -31,6 +31,13 @@ goto lblError
   copy /Y c:\PVS-Config\PVS-Studio\Amberfin-Microsoft.Cpp.x64.user.props Microsoft.Cpp.x64.user.props
   copy /Y c:\PVS-Config\PVS-Studio\Amberfin-Microsoft.Cpp.Win32.user.props Microsoft.Cpp.Win32.user.props
   goto lblAllOk
+
+  rem Compile IDL, MC, TLH
+  cd /d s:\src\env\MasterBuild\
+  call set-daletplus-dev-path-x64.bat 
+  call SetMsdevEnvx64.bat 
+  call BuildNetProjectsx64.bat
+  devenv AutoGenSources.sln /rebuild "Release|x64" /useenv
   
 :lblx64
   rem Props
@@ -53,6 +60,13 @@ goto lblError
   call c:\PVS-Config\PVS-Studio\SlnSplitter.py ^
     s:\src\env\MasterBuild\generated-x64-projects.sln 3
   if %ERRORLEVEL% NEQ 0 goto lblError
+  
+  rem Compile IDL, MC, TLH
+  cd /d s:\src\env\MasterBuild\
+  call set-daletplus-dev-path-x64.bat 
+  call SetMsdevEnvx64.bat 
+  call BuildNetProjectsx64.bat
+  devenv AutoGenSources.sln /rebuild "Release|x64" /useenv
   
 :lblAllOk
 popd
