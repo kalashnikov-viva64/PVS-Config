@@ -8,6 +8,14 @@
 				</cb:ifdef>
 			</triggers>
 			<tasks>
+				<exec>
+					<description>KillProcesses.bat</description>
+					<executable>C:\PVS-Config\PVS-Studio\KillProcesses.bat</executable>
+					<buildArgs></buildArgs>
+					<baseDirectory>C:\</baseDirectory>
+					<buildTimeoutSeconds>1800</buildTimeoutSeconds>
+					<successExitCodes>0</successExitCodes>
+				</exec>
 				<cb:ifdef name="Proj_DefSvnUpdate">
 					<exec>
 						<description>SvnUpdate.bat</description>
@@ -45,6 +53,14 @@
 			</triggers>
 			<labeller type="dateLabeller" />
 			<tasks>
+				<exec>
+					<description>KillProcesses.bat</description>
+					<executable>C:\PVS-Config\PVS-Studio\KillProcesses.bat</executable>
+					<buildArgs></buildArgs>
+					<baseDirectory>C:\</baseDirectory>
+					<buildTimeoutSeconds>1800</buildTimeoutSeconds>
+					<successExitCodes>0</successExitCodes>
+				</exec>
 				<cb:ifdef name="Proj_DefSvnUpdate">
 					<exec>
 						<description>SvnUpdate.bat</description>
