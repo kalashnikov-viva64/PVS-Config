@@ -113,7 +113,7 @@ exit /b 2
 
 :lblAllOk
 	if exist %PVS_PlogFileWithSuppress% goto lblWithSuppress
-	copy %PVS_PlogFile% %PVS_PlogFileWithSuppress%
+	copy "%PVS_PlogFile%" "%PVS_PlogFileWithSuppress%"
 :lblWithSuppress
 @endlocal
 exit /b 0
