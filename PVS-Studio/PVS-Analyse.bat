@@ -112,7 +112,7 @@ set /a CntMax="%PVS_DelayMin%*4"
 exit /b 2
 
 :lblAllOk
-	if exist %PVS_PlogFileWithSuppress% goto lblWithSuppress
+	if exist "%PVS_PlogFileWithSuppress%" goto lblWithSuppress
 	copy "%PVS_PlogFile%" "%PVS_PlogFileWithSuppress%"
 :lblWithSuppress
 @endlocal
