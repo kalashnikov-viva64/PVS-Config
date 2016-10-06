@@ -1,4 +1,5 @@
-rem Usage: PVS-Analyse.bat <PVS_Platform> <PVS_DelayMin> <PVS_NumPart>
+rem Usage1: PVS-Analyse.bat <PVS_Platform> <PVS_DelayMin> <PVS_NumPart>
+rem Usage2: PVS-Analyse.bat <PVS_Platform> <PVS_CmdVer>
 rem <PVS_Platform> - Dalet_x86_trunk, Dalet_x64_trunk, Amberfin_x64
 rem <PVS_DelayMin> - build time in minutes
 rem <PVS_NumPart> - number of parts
@@ -6,9 +7,17 @@ rem <PVS_NumPart> - number of parts
 @setlocal
 
 rem Command line parameters
+if "%2" EQU "CmdVer" goto lblCmdVer
 set PVS_Platform=%1
 set PVS_DelayMin=%2
 set PVS_NumPart=%3
+	set PVS_CmdVer=
+	goto lblEndType
+:lblCmdVer
+	set PVS_Platform=%1
+	set PVS_CmdVer=%2
+	set PVS_NumPart=%3
+:lblEndType
 
 rem Platform selection
 if %PVS_Platform% EQU Dalet_x86_trunk goto lblDalet_x86_trunk
@@ -30,10 +39,17 @@ goto lblError
 :lblDalet_x64_trunk
   set PVS_MSVC=devenv.exe
   set PVS_SolutionDir=S:\src\env\MasterBuild
-  set PVS_Solution=generated-x64-projects_%PVS_NumPart%.sln
   set PVS_PlogDir=C:\PVS Dalet logs x64 trunk\temp
+  if "%PVS_NumPart%" EQU "" goto lblCmdVer2
+	set PVS_Solution=generated-x64-projects_%PVS_NumPart%.sln
   set PVS_PlogFile=%PVS_PlogDir%\generated-x64-projects_%PVS_NumPart%.plog
   set PVS_PlogFileWithSuppress=%PVS_PlogDir%\generated-x64-projects_%PVS_NumPart%_WithSuppressedMessages.plog
+	goto lblEndType2
+:lblCmdVer2
+  set PVS_Solution=generated-x64-projects.sln
+  set PVS_PlogFile=%PVS_PlogDir%\generated-x64-projects.plog
+  set PVS_PlogFileWithSuppress=%PVS_PlogDir%\generated-x64-projects_WithSuppressedMessages.plog
+:lblEndType2
   set PVS_PluginExec="PVSStudio.CheckSolution x64|Release|%PVS_PlogFile%|||SuppressAll"
   cd /d S:\src\env\MasterBuild
   call set-daletplus-dev-path-x64.bat
@@ -59,10 +75,11 @@ cd /d %PVS_SolutionDir%
 @echo on
 
 if not exist %PVS_Solution% goto lblError
+
+if "%PVS_CmdVer%" EQU "CmdVer" goto lblCmdVer3
 set I=1
 set Cnt=0
 set /a CntMax="%PVS_DelayMin%*4"
-
 :lblNextAttempt
 	echo %TIME%: Starting PVS-Analyse attempt %I%
 	
@@ -106,6 +123,15 @@ set /a CntMax="%PVS_DelayMin%*4"
 	sleep 300
 	set /a I+=1
     if %I% LEQ 10 if %Cnt% LEQ %CntMax% goto lblNextAttempt
+		goto lblEndType3
+
+:lblCmdVer3
+	rem set PVS_PlogFile=%PVS_PlogDir%\generated-x64-projects.plog
+    rem set PVS_PlogFileWithSuppress=%PVS_PlogDir%\generated-x64-projects_WithSuppressedMessages.plog
+	set PVS_AnalyseLog=%PVS_PlogDir%\Analyse.log
+	call "C:\temp\PVS-Studio_Cmd\PVS-Studio_Cmd.exe" -t %PVS_Solution% -o "%PVS_PlogFile%" -p x64 -c Release -a -q -r > "%PVS_AnalyseLog%" 2>&1
+	if exist "%PVS_PlogFile%" goto lblAllOk
+:lblEndType3
 
 :lblError
 @endlocal
@@ -115,5 +141,7 @@ exit /b 2
 	if exist "%PVS_PlogFileWithSuppress%" goto lblWithSuppress
 	copy "%PVS_PlogFile%" "%PVS_PlogFileWithSuppress%"
 :lblWithSuppress
+copy "%PVS_PlogFileWithSuppress%" "%PVS_PlogFileWithSuppress%.nonFiltered.plog"
+call "C:\SonarQube\PlogConverter\PlogConverter.exe" -a GA:1,2;FAIL:0,1;64:1 -o "%PVS_PlogDir%" -t Plog "%PVS_PlogFileWithSuppress%"
 @endlocal
 exit /b 0

@@ -2,7 +2,8 @@
 <Profile FormatVersion="1">
   <Tools>
     <Tool Filename="devenv" AllowIntercept="true" />
-    <Tool Filename="PVS-Studio" AllowRemote="true" />
+    <Tool Filename="PVS-Studio_Cmd" AllowIntercept="true" />
+	<Tool Filename="PVS-Studio" AllowRemote="true" />
   </Tools>
 </Profile>
 

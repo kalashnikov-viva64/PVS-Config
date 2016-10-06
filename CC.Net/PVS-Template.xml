@@ -47,9 +47,9 @@
 	<cb:define name="template_of_PVS_Analyse">
 		<project name="$(Proj_ProjectName)" queuePriority="2" queue="Q1">
 			<triggers>
-				<cb:ifdef name="Proj_ScheduleTime">
+				<!-- <cb:ifdef name="Proj_ScheduleTime">
 					<scheduleTrigger time="$(Proj_ScheduleTime)" buildCondition="ForceBuild"/>
-				</cb:ifdef>
+				</cb:ifdef> -->
 			</triggers>
 			<labeller type="dateLabeller" />
 			<tasks>
@@ -126,4 +126,216 @@
 			</publishers>
 		</project>
 	</cb:define>
+	
+	<cb:define name="template_of_PVS_Analyse_SonarQube">
+		<project name="$(Proj_ProjectName)" queue="Q1" queuePriority="1">
+			<labeller type="dateLabeller"/>
+			
+			<triggers>
+				<scheduleTrigger time="$(Proj_ScheduleTime)" buildCondition="ForceBuild" name="Scheduled"/>
+			</triggers>
+			
+			<tasks>
+				<!-- Kill all processes -->
+				<exec>
+					<description>KillProcesses.bat</description>
+					<executable>C:\PVS-Config\PVS-Studio\KillProcesses.bat</executable>
+					<buildArgs></buildArgs>
+					<baseDirectory>C:\</baseDirectory>
+					<buildTimeoutSeconds>1800</buildTimeoutSeconds>
+					<successExitCodes>0</successExitCodes>
+				</exec>
+				
+				<!-- Update Svn -->
+				<exec>
+						<description>SvnUpdate.bat</description>
+						<executable>C:\PVS-Config\CC.Net\SvnUpdate.bat</executable>
+						<buildArgs></buildArgs>
+						<baseDirectory>C:\</baseDirectory>
+						<buildTimeoutSeconds>10800</buildTimeoutSeconds>
+						<successExitCodes>0</successExitCodes>
+				</exec>
+				
+				<!-- Back up the SonarQube database -->
+				<exec>
+						<description>SonarQubeDbBackup.bat</description>
+						<executable>C:\PVS-Config\CC.Net\SonarQubeDbBackup.bat</executable>
+						<buildArgs></buildArgs>
+						<baseDirectory>C:\</baseDirectory>
+						<buildTimeoutSeconds>10800</buildTimeoutSeconds>
+						<successExitCodes>0</successExitCodes>
+				</exec>
+				
+				<!-- Run PVS-Studio analysis -->
+				<exec>
+					<description>PrepareWorkspace.bat</description>
+					<executable>C:\PVS-Config\CC.Net\PrepareWorkspace.bat</executable>
+					<buildArgs>$(Proj_Platform) $(Proj_IncrediBuild) $(Proj_Team) $(Proj_CmdVer)</buildArgs>
+					<baseDirectory>C:\</baseDirectory>
+					<buildTimeoutSeconds>1800</buildTimeoutSeconds>
+					<successExitCodes>0</successExitCodes>
+				</exec>
+				
+				<!-- Update the SonarQube plugin and the Quality Profile -->
+				<exec>
+				  <description>Update the SonarQube plugin and the Quality Profile</description>
+				  <executable>C:\PVS-Config\PVS-Studio\UpdatePlugin.bat</executable>
+				  <buildArgs></buildArgs>
+				  <baseDirectory>C:\</baseDirectory>
+				  <buildTimeoutSeconds>600</buildTimeoutSeconds>
+				  <successExitCodes>0</successExitCodes>
+				</exec>
+				
+				<exec>
+					<description>Copy sonar-project.properties to the working dir</description>
+					<executable>C:\PVS-Config\PVS-Studio\copySonarProperties.bat</executable>
+					<buildArgs>c:\PVS-Config\PVS-Studio\sonar-project.properties s:\src\env\MasterBuild\</buildArgs>
+					<baseDirectory>C:\</baseDirectory>
+					<buildTimeoutSeconds>72000</buildTimeoutSeconds>
+					<successExitCodes>0</successExitCodes>
+				</exec>
+				
+				<exec>
+					<description>Analyse.bat</description>
+					<executable>C:\PVS-Config\CC.Net\Analyse.bat</executable>
+					<buildArgs>$(Proj_Platform) $(Proj_IncrediBuild) "$(Proj_RootFolder)\temp" $(Proj_CmdVer)</buildArgs>
+					<baseDirectory>C:\</baseDirectory>
+					<buildTimeoutSeconds>72000</buildTimeoutSeconds>
+					<successExitCodes>0</successExitCodes>
+				</exec>
+				
+				<!-- Call SonarQube scanner -->
+				<exec>
+					<description>Call SonarQube scanner</description>
+					<executable>C:\Sonarqube-Scanner\bin\sonar-scanner.bat</executable>
+					<buildArgs>-Dsonar.projectKey="org.sonar:Dalet" -Dsonar.projectName="Dalet" -Dsonar.projectVersion=$[$CCNetLabel] -Dsonar.login=admin -Dsonar.password=NScFhpQq2m -Dsonar.pvs-studio.reportPath="C:\PVS Dalet logs x64 trunk\temp\generated-x64-projects_WithSuppressedMessages.plog"</buildArgs>
+					<baseDirectory>s:\src\env\MasterBuild</baseDirectory>
+					<buildTimeoutSeconds>0</buildTimeoutSeconds>
+					<successExitCodes>0</successExitCodes>
+				</exec>
+			</tasks>
+			<publishers>
+			    <exec>
+					<description>PublishingResults.bat</description>
+					<executable>C:\PVS-Config\CC.Net\PublishingResults.bat</executable>
+					<buildArgs>$(Proj_Platform) "$(Proj_RootFolder)\temp" $(Proj_Team) $(Proj_CmdVer)</buildArgs>
+					<baseDirectory>C:\</baseDirectory>
+					<buildTimeoutSeconds>14400</buildTimeoutSeconds>
+				</exec>
+				<merge>
+					<files>
+						<file>$(Proj_RootFolder)\temp\$(Proj_PlogFile)_totals.txt</file>
+						<file>$(Proj_RootFolder)\temp\$(Proj_PlogFile).txt</file>
+					</files>
+				</merge>
+				<xmllogger />
+				<exec>
+					<description>ClearWorkspace.bat</description>
+					<executable>C:\PVS-Config\CC.Net\ClearWorkspace.bat</executable>
+					<buildArgs>$(Proj_Platform)</buildArgs>
+					<baseDirectory>C:\</baseDirectory>
+					<buildTimeoutSeconds>1800</buildTimeoutSeconds>
+				</exec>
+				<buildpublisher>
+					<sourceDir>$(Proj_RootFolder)\temp</sourceDir>
+					<cb:if expr="'$(Proj_CmdVer)'=='CmdVer'">
+						<publishDir>$(Proj_RootFolder)\CmdVer</publishDir>
+					</cb:if>
+					<cb:else>
+						<publishDir>$(Proj_RootFolder)</publishDir>
+					</cb:else>
+					<useLabelSubDirectory>true</useLabelSubDirectory>
+					<alwaysPublish>true</alwaysPublish>
+				</buildpublisher>
+				<exec>
+					<executable>C:\Windows\System32\cmd.exe</executable>
+					<description>delete temp folder</description>
+					<buildArgs>/c del /Q temp</buildArgs>
+					<baseDirectory>$(Proj_RootFolder)</baseDirectory>
+					<buildTimeoutSeconds>300</buildTimeoutSeconds>
+				</exec>
+			</publishers>
+		</project>
+	</cb:define>
+	
+	<cb:define name="template_of_SonarQube_Analysis_Java">
+		<project name="$(Proj_ProjectName)" queue="Q1" queuePriority="1">
+			<labeller type="dateLabeller"/>
+			
+			<triggers>
+				<scheduleTrigger time="$(Proj_ScheduleTime)" buildCondition="ForceBuild" name="Scheduled"/>
+			</triggers>
+			
+			<tasks>
+				<!-- Update Svn -->
+				<exec>
+						<description>SvnUpdate.bat</description>
+						<executable>C:\PVS-Config\CC.Net\SvnUpdate.bat</executable>
+						<buildArgs></buildArgs>
+						<baseDirectory>C:\</baseDirectory>
+						<buildTimeoutSeconds>10800</buildTimeoutSeconds>
+						<successExitCodes>0</successExitCodes>
+				</exec>
+				
+				<!-- Analyse AutomaticTests40 project -->
+				<exec>
+					<description>Call SonarQube scanner for the AutomaticTests40 project</description>
+					<executable>C:\PVS-Config\CC.Net\StartScanner.bat</executable>
+					<buildArgs>-Dsonar.projectVersion=$[$CCNetLabel] -Dsonar.login=admin -Dsonar.password=NScFhpQq2m</buildArgs>
+					<baseDirectory>s:\src\java\AutomatedTests</baseDirectory>
+					<buildTimeoutSeconds>0</buildTimeoutSeconds>
+					<successExitCodes>0</successExitCodes>
+				</exec>
+				
+				<!-- Analyse BPM-JS project -->
+				<exec>
+					<description>Call SonarQube scanner for the BPM-JS project</description>
+					<executable>C:\PVS-Config\CC.Net\StartScanner.bat</executable>
+					<buildArgs>-Dsonar.projectVersion=$[$CCNetLabel] -Dsonar.login=admin -Dsonar.password=NScFhpQq2m</buildArgs>
+					<baseDirectory>s:\src\java\BPM</baseDirectory>
+					<buildTimeoutSeconds>0</buildTimeoutSeconds>
+					<successExitCodes>0</successExitCodes>
+				</exec>
+				
+				<!-- Analyse WebSpaceJS project -->
+				<exec>
+					<description>Call SonarQube scanner for the WebSpaceJS project</description>
+					<executable>C:\PVS-Config\CC.Net\StartScanner.bat</executable>
+					<buildArgs>-Dsonar.projectVersion=$[$CCNetLabel] -Dsonar.login=admin -Dsonar.password=NScFhpQq2m</buildArgs>
+					<baseDirectory>s:\src\java\WebSpace</baseDirectory>
+					<buildTimeoutSeconds>0</buildTimeoutSeconds>
+					<successExitCodes>0</successExitCodes>
+				</exec>
+				
+				<!-- Analyse Dalet40 project -->
+				<exec>
+					<description>gradlew generateSonarProjectProperties</description>
+					<executable>gradlew.bat</executable>
+					<buildArgs>generateSonarProjectProperties</buildArgs>
+					<baseDirectory>s:\src\java\</baseDirectory>
+					<buildTimeoutSeconds>6000</buildTimeoutSeconds>
+					<successExitCodes>0</successExitCodes>
+				</exec>
+				
+				<exec>
+					<description>Copy sonar-project.properties to the working dir</description>
+					<executable>c:\pvs-config\pvs-studio\copysonarproperties.bat</executable>
+					<buildArgs>sonarqubeanalysis\sonar-project.properties .</buildArgs>
+					<baseDirectory>s:\src\java</baseDirectory>
+					<buildTimeoutSeconds>100</buildTimeoutSeconds>
+					<successExitCodes>0</successExitCodes>
+				</exec>
+				
+				<exec>
+					<description>Call SonarQube scanner for the Dalet40 project</description>
+					<executable>C:\PVS-Config\CC.Net\StartScanner.bat</executable>
+					<buildArgs>-Dsonar.projectVersion=$[$CCNetLabel] -Dsonar.login=admin -Dsonar.password=NScFhpQq2m</buildArgs>
+					<baseDirectory>s:\src\java</baseDirectory>
+					<buildTimeoutSeconds>0</buildTimeoutSeconds>
+					<successExitCodes>0</successExitCodes>
+				</exec>
+			</tasks>
+		</project>
+	</cb:define>
 </cb:config-template>
+

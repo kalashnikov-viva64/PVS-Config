@@ -1,7 +1,8 @@
-rem Usage: PrepareWorkspace.bat <PVS_Platform> <PVS_IncrediBuild> <PVS_Team>
+rem Usage: PrepareWorkspace.bat <PVS_Platform> <PVS_IncrediBuild> <PVS_Team> <PVS_CmdVer>
 rem <PVS_Platform> - x64, Amberfin_x86
 rem <PVS_IncrediBuild> - UseIB, NotUseIB
 rem <PVS_Team> - Dalet, Viva
+rem <PVS_CmdVer> - "", CmdVer
 @echo on
 @setlocal
 pushd %~dp0
@@ -9,6 +10,7 @@ cd /d %~dp0
 set PVS_Platform=%1
 set PVS_IncrediBuild=%2
 set PVS_Team=%3
+set PVS_CmdVer=%4
 echo %TIME%: Starting PrepareWorkspace.bat
 
 rem Install last build of PVS-Studio
@@ -18,9 +20,11 @@ if %PVS_Team% NEQ Dalet goto lblEndUpdater
   call PVS-Studio-Updater.exe /VERYSILENT /SUPPRESSMSGBOXES
   del PVS-Studio-Updater.exe
 :lblEndUpdater
+rem goto lblWithoutUpdate
 if %PVS_Team% EQU Viva call \\Viva64-build\Builder\PVS-Studio_setup.exe ^
   /VERYSILENT /SUPPRESSMSGBOXES /COMPONENTS=Core,Standalone,MSVS,MSVS\2010,MSVS\2012
 if %ERRORLEVEL% NEQ 0 goto lblError
+:lblWithoutUpdate
 
 if %PVS_Platform% EQU Amberfin_x86 goto lblAmberfin_x86
 if %PVS_Platform% EQU x64 goto lblx64
@@ -53,8 +57,15 @@ goto lblError
 
   mkdir "C:\PVS Dalet logs x64 trunk"
   mkdir "C:\PVS Dalet logs x64 trunk\temp"
+  if "%PVS_CmdVer%" EQU "CmdVer" goto lblCmdVer
   mkdir "S:\src_suppress_x64_trunk"
   robocopy "s:\src_suppress_x64_trunk" "s:\src" *.suppress /s /IS
+	goto lblEndIf3
+:lblCmdVer
+    mkdir "S:\src_suppress_x64_trunk_CmdVer"
+	robocopy "s:\src_suppress_x64_trunk_CmdVer" "s:\src" *.suppress /s /IS
+:lblEndIf3
+  
   call c:\PVS-Config\PVS-Studio\GenerateSln.bat x64
   if %ERRORLEVEL% NEQ 0 goto lblError
   call c:\PVS-Config\PVS-Studio\SlnSplitter.py ^

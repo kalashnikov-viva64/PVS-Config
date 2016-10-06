@@ -1,7 +1,8 @@
-rem Usage: PublishingResults.bat <PVS_Platform> <PVS_Folder> <PVS_Team>
+rem Usage: PublishingResults.bat <PVS_Platform> <PVS_Folder> <PVS_Team> <PVS_CmdVer>
 rem <PVS_Platform> - x64, Amberfin_x86
 rem <PVS_Folder> - folder
 rem <PVS_Team> - Dalet, Viva
+rem <PVS_CmdVer> - "", CmdVer
 @echo on
 @setlocal
 pushd %~dp0
@@ -9,6 +10,7 @@ cd /d %~dp0
 set PVS_Platform=%1
 set PVS_Folder=%2
 set PVS_Team=%3
+set PVS_CmdVer=%4
 set LastError=0
 echo %TIME%: Starting PublishingResults.bat
 
@@ -21,6 +23,7 @@ set Y=%%l
 ) 
 
 if %PVS_Platform% EQU Amberfin_x86 goto lblAmberfin_x86
+if %PVS_Team% EQU Dalet if %PVS_CmdVer% EQU CmdVer goto lblVivax64
 if %PVS_Team% EQU Dalet if %PVS_Platform% EQU x64 goto lblDaletx64
 if %PVS_Team% EQU Viva if %PVS_Platform% EQU x64 goto lblVivax64
 goto lblError
@@ -50,12 +53,13 @@ goto lblError
   goto lblEndIf
   
 :lblVivax64
-  set PlogFile=generated-x64-projects.plog
+  set PlogFile=generated-x64-projects_WithSuppressedMessages.plog
 
   rem PlogConverter
   cd /d %PVS_Folder%
   call "c:\Program Files (x86)\PVS-Studio\PlogConverter.exe" -a GA:1,2;64:1 %PlogFile%
   if %ERRORLEVEL% NEQ 0 set LastError=%ERRORLEVEL%
+  goto lblWithoutEmail
   call c:\sendemail\sendemail.exe ^
 	-f builder@viva64.com ^
 	-t kalashnikov@viva64.com ^
@@ -65,9 +69,16 @@ goto lblError
 	-o username=u410986 ^
 	-o password=213327374ui 
   if %ERRORLEVEL% NEQ 0 set LastError=%ERRORLEVEL%
+:lblWithoutEmail
   
   rem Update suppress bases
+  if "%PVS_CmdVer%" EQU "CmdVer" goto lblCmdVer
   robocopy "S:\src" "S:\src_suppress_x64_trunk" *.suppress /s /IS
+	goto lblEndIf3
+:lblCmdVer
+    robocopy "S:\src" "S:\src_suppress_x64_trunk_CmdVer" *.suppress /s /IS
+:lblEndIf3
+  
   goto lblEndIf
 :lblEndIf
   if %LastError% NEQ 0 goto lblError
